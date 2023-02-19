@@ -1,0 +1,13 @@
+LightGBM_bagging_fraction: 0.9
+LightGBM_bagging_freq: 1
+LightGBM_feature_fraction: 0.2
+LightGBM_lambda_l1: 55
+LightGBM_lambda_l2: 5
+LightGBM_learning_rate: 0.08556397309557034
+LightGBM_max_depth: 11
+LightGBM_min_data_in_leaf: 8000
+LightGBM_min_gain_to_split: 10.174761721608242
+LightGBM_n_estimators: 970
+LightGBM_num_leaves: 2140
+best_value: 0.6001863116676793
+metric: F1

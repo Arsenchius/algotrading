@@ -1,0 +1,13 @@
+LightGBM_bagging_fraction: 0.30000000000000004
+LightGBM_bagging_freq: 1
+LightGBM_feature_fraction: 0.2
+LightGBM_lambda_l1: 0
+LightGBM_lambda_l2: 0
+LightGBM_learning_rate: 0.11464598777975586
+LightGBM_max_depth: 7
+LightGBM_min_data_in_leaf: 2700
+LightGBM_min_gain_to_split: 8.429866457189398
+LightGBM_n_estimators: 232
+LightGBM_num_leaves: 1660
+best_value: 0.513206919798621
+metric: ROC AUC
