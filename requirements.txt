@@ -1,4 +1,12 @@
+binance==0.3
+lightgbm==3.3.5
+numpy==1.24.2
+optuna==3.1.0
 pandas==1.5.3
 python_binance==1.0.16
-SQLAlchemy==2.0.2
+PyYAML==6.0
+scikit_learn==1.2.1
+SQLAlchemy==2.0.3
+ta==0.10.2
 tqdm==4.64.1
+xgboost==1.7.4
