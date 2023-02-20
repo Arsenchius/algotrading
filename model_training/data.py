@@ -8,10 +8,8 @@ import os
 from pathlib import Path
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-# print(SCRIPT_DIR)
-# print(Path(os.path.dirname(SCRIPT_DIR)))
 sys.path.append(os.path.join(Path(os.path.dirname(SCRIPT_DIR)), 'backtesting'))
-# print(sys.path)
+
 from backtest import *
 from strategies import *
 from config import *

@@ -1,0 +1,11 @@
+XGBoost_colsample_bytree: 0.7798615509423746
+XGBoost_gamma: 7.924867067855266e-06
+XGBoost_learning_rate: 0.2872123558345782
+XGBoost_max_depth: 6
+XGBoost_min_child_weight: 7
+XGBoost_n_estimators: 929
+XGBoost_reg_alpha: 0.2213098802915203
+XGBoost_reg_lambda: 0.0010441439770529134
+XGBoost_subsample: 0.09692989520502088
+best_value: 0.5786422266211237
+metric: F1

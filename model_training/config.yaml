@@ -2,17 +2,19 @@ model_name:
   LightGBM:
     parameters:
       # device_type: !!python/tuple ["cat", ['gpu']]
-      n_estimators: !!python/tuple ["int", 50, 1000]
+      # n_estimators: !!python/tuple ["int", 50, 1000]
+      n_estimators: !!python/tuple ["cat", [10000]]
       learning_rate: !!python/tuple ["float", 0.01, 0.3]
       num_leaves: !!python/tuple ["int", 20, 3000, 20]
       max_depth: !!python/tuple ["int", 3, 12]
-      min_data_in_leaf: !!python/tuple ["int", 200, 10000, 100]
+      # min_data_in_leaf: !!python/tuple ["int", 20, 1000, 20]
       lambda_l1: !!python/tuple ["int", 0, 100, 5]
       lambda_l2: !!python/tuple ["int", 0, 100, 5]
       min_gain_to_split: !!python/tuple ["float", 0, 15]
       bagging_fraction: !!python/tuple ["float", 0.2, 0.95, 0.1]
       bagging_freq: !!python/tuple ["cat", [1]]
       feature_fraction: !!python/tuple ["float", 0.2, 0.95, 0.1]
+      early_stopping_rounds: !!python/tuple ["int", 50, 500]
 
 
   XGBoost:
@@ -22,13 +24,14 @@ model_name:
       learning_rate: !!python/tuple ["float", 0.01, 0.3]
       n_estimators: !!python/tuple ["int", 50, 1000]
       min_child_weight: !!python/tuple ["int", 1, 10]
-      gamma: !!python/tuple ["log", 1e-8, 1.0]
+      gamma: !!python/tuple ["log", 0.00000001, 1.0]
       subsample: !!python/tuple ["log", 0.01, 1.0]
-      colsample_bytree: !!python/tuple ["log", 0.01, 1.0]
-      reg_alpha: !!python/tuple ["log", 1e-8, 1.0]
-      reg_lambda: !!python/tuple ["log", 1e-8, 1.0]
-      eval_metric: "mlogloss"
+      colsample_bytree: !!python/tuple ["float", 0.01, 1.0]
+      reg_alpha: !!python/tuple ["log", 0.00000001, 100.0]
+      reg_lambda: !!python/tuple ["log", 0.00000001, 100.0]
       use_label_encoder: False
+      objective: 'binary:logistic'
+      # early_stopping_rounds: !!python/tuple ["int", 100, 500]
 
   # CatBoost:
     # parameters:

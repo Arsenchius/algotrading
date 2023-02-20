@@ -21,7 +21,8 @@ import optuna
 from metrics import *
 from objective import Objective
 import yaml
-from tqdm import tqdm
+# from tqdm import tqdm
+from tqdm.notebook import tqdm
 import ta
 import os
 
@@ -35,6 +36,7 @@ def get_metrics():
     except Exception as e:
         print("Error reading the config file")
     return metrics
+
 
 def get_params(model_name):
     try:
@@ -80,6 +82,7 @@ class Model:
 
         self.params = get_params(model_name)
 
+
     def indicators_calc(self):
         for i in range(2, 10, 2):
             self.df[f"RSI_{i}"] = ta.momentum.rsi(self.df["Close"], window=i)
@@ -87,45 +90,16 @@ class Model:
         # df['MACD'] = ta.trend.macd_diff(df['Close'])
         self.df.dropna(inplace=True)
 
+
     def create_target(self, period=1):
         self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
         self.df = self.df[:-period]
         if self.task_type == "classification":
             self.df["Target"] = np.where(self.df["Target"] > 0, 1, 0)
 
-    # def objective(
-    #     self, trial, param_grid, score_metric, number_of_splits=5, test_size=5 * 24 * 60
-    # ):
 
-    #     tss = TimeSeriesSplit(n_splits=number_of_splits, test_size=test_size)
-    #     self.df = self.df.sort_index()
-    #     predictions = []
-    #     scores = []
-
-    #     for train_idx, val_idx in tss.split(self.df):
-    #         train = self.df.iloc[train_idx]
-    #         test = self.df.iloc[val_idx]
-
-    #         X_train = train[FEATURES]
-    #         y_train = train[TARGET]
-
-    #         X_test = test[FEATURES]
-    #         y_test = test[TARGET]
-
-    #         self.model.fit(
-    #             X_train,
-    #             y_train,
-    #             eval_set=[(X_test, y_test)],
-    #             early_stopping_rounds=100,
-    #         )
-
-    #         y_pred = self.model.predict(X_test)
-    #         predictions.append(y_pred)
-    #         scores.append(score_metric(y_test, y_pred))
-
-    #     return np.mean(scores)
-
-    def optimize(self, output_dir_path):
+    def optimize(self, output_dir_path, metric=None, number_of_trials=10):
+        is_metric = False
         metrics = get_metrics()
         if not os.path.exists(output_dir_path):
             os.mkdir(output_dir_path)
@@ -135,14 +109,20 @@ class Model:
         if not os.path.exists(full_dir_output_path):
             os.mkdir(full_dir_output_path)
 
+        if metric is not None:
+            is_metric = True
+
         for item in tqdm(metrics[self.task_type]):
+            if is_metric:
+                if item != metric:
+                    continue
             direction = metrics[item]["objective"]
             direction = "minimize" if direction == "min" else "maximize"
             study_name = f"{self.task_type} {self.model_name} with metric - {item}"
             study = optuna.create_study(direction=direction, study_name=study_name)
             # func = lambda trial: Objective(self, metric_grid[item])
             func = Objective(self, metric_grid[item])
-            study.optimize(func, n_trials=10)
+            study.optimize(func, n_trials=number_of_trials)
             results = study.best_params
             results["best_value"] = study.best_value
             results["metric"] = metrics[item]['abbr']

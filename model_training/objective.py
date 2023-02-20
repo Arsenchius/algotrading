@@ -25,7 +25,7 @@ def Objective(model, score_metric, number_of_splits=5, test_size=5*24*60):
             model.model_name: {
                 key: (
                     method_names.get(val[0]),
-                    ("{}_{}".format(model.model_name, key), *val[1:]),
+                    ("{}".format(key), *val[1:]),
                 )
                 if type(val) is tuple else val
                 for key, val in model.params.items()
@@ -70,7 +70,6 @@ def Objective(model, score_metric, number_of_splits=5, test_size=5*24*60):
                         X_train,
                         y_train,
                         eval_set=[(X_test, y_test)],
-                        early_stopping_rounds=100,
                     )
                 else:
                     model_loaded.fit(X_train, y_train)

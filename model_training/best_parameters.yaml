@@ -1,5 +1,0 @@
-best_parameters:
-  batch_size: 32
-  learning_rate: 0.01
-  num_epochs: 5000
-  optimizer: Adam
