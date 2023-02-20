@@ -1,13 +1,13 @@
-LightGBM_bagging_fraction: 0.4
+LightGBM_bagging_fraction: 0.9
 LightGBM_bagging_freq: 1
-LightGBM_feature_fraction: 0.30000000000000004
-LightGBM_lambda_l1: 45
-LightGBM_lambda_l2: 10
-LightGBM_learning_rate: 0.11216769859122865
-LightGBM_max_depth: 7
-LightGBM_min_data_in_leaf: 800
-LightGBM_min_gain_to_split: 2.753440236529594
-LightGBM_n_estimators: 642
-LightGBM_num_leaves: 2620
-best_value: 17.633356208031422
+LightGBM_feature_fraction: 0.6000000000000001
+LightGBM_lambda_l1: 0
+LightGBM_lambda_l2: 85
+LightGBM_learning_rate: 0.10462889868958572
+LightGBM_max_depth: 5
+LightGBM_min_data_in_leaf: 8200
+LightGBM_min_gain_to_split: 7.112963662003123
+LightGBM_n_estimators: 505
+LightGBM_num_leaves: 1280
+best_value: 17.609327105772014
 metric: Log Loss

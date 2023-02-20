@@ -4,11 +4,14 @@ from binance import Client
 import ta
 import sys
 import tqdm
+import os
+from pathlib import Path
 
-sys.path.insert(
-    1,
-    "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/backtesting",
-)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# print(SCRIPT_DIR)
+# print(Path(os.path.dirname(SCRIPT_DIR)))
+sys.path.append(os.path.join(Path(os.path.dirname(SCRIPT_DIR)), 'backtesting'))
+# print(sys.path)
 from backtest import *
 from strategies import *
 from config import *

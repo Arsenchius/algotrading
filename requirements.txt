@@ -3,7 +3,6 @@ lightgbm==3.3.5
 numpy==1.24.2
 optuna==3.1.0
 pandas==1.5.3
-python_binance==1.0.16
 PyYAML==6.0
 scikit_learn==1.2.1
 SQLAlchemy==2.0.3
