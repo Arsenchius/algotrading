@@ -1,13 +1,13 @@
-bagging_fraction: 0.30000000000000004
+bagging_fraction: 0.4
 bagging_freq: 1
-best_value: 17.38906033506074
-early_stopping_rounds: 228
-feature_fraction: 0.4
-lambda_l1: 40
-lambda_l2: 55
-learning_rate: 0.07254098200267446
+best_value: 17.44212460255027
+early_stopping_rounds: 187
+feature_fraction: 0.8
+lambda_l1: 30
+lambda_l2: 45
+learning_rate: 0.2413103032537826
 max_depth: 5
 metric: Log Loss
-min_gain_to_split: 0.7557104999870938
+min_gain_to_split: 1.7461472397336326
 n_estimators: 10000
-num_leaves: 2580
+num_leaves: 940
