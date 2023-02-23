@@ -2,7 +2,6 @@ import lightgbm as lgb
 import xgboost as xgb
 import pandas as pd
 import numpy as np
-
 # from catboost import CatBoostRegressor, CatBoostClassifier
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.model_selection import TimeSeriesSplit
@@ -22,8 +21,6 @@ import optuna
 from metrics import *
 from objective import Objective
 import yaml
-
-# from tqdm import tqdm
 from tqdm.notebook import tqdm
 import ta
 import os
