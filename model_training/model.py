@@ -16,19 +16,21 @@ from sklearn.metrics import (
     mean_absolute_error,
 )
 from data import *
+from dataset import *
 from optuna.integration import LightGBMPruningCallback
 import optuna
 from metrics import *
 from objective import Objective
 import yaml
+
 # from tqdm import tqdm
 from tqdm.notebook import tqdm
 import ta
 import os
+from typing import NoReturn, List, Dict, Union
 
 
-
-def get_metrics():
+def get_metrics() -> Dict:
     metrics_config_file = "metrics.yaml"
     try:
         with open(metrics_config_file, "r") as file:
@@ -38,19 +40,18 @@ def get_metrics():
     return metrics
 
 
-def get_params(model_name):
+def get_params(model_name: str) -> Dict:
     try:
-        with open('config.yaml') as f:
+        with open("config.yaml") as f:
             params = yaml.load(f, Loader=yaml.FullLoader)
     except Exception as e:
         print("Error reading the config file")
 
-    return params['model_name'][model_name]['parameters']
+    return params["model_name"][model_name]["parameters"]
 
 
 class Model:
-    def __init__(self, df, model_name, task_type):
-        self.df = df
+    def __init__(self, model_name, task_type) -> NoReturn:
         self.model_name = model_name
         self.task_type = task_type
         if self.task_type == "classification":
@@ -82,23 +83,13 @@ class Model:
 
         self.params = get_params(model_name)
 
-
-    def indicators_calc(self):
-        for i in range(2, 10, 2):
-            self.df[f"RSI_{i}"] = ta.momentum.rsi(self.df["Close"], window=i)
-            self.df[f"SMA_{i*10}"] = self.df["Close"].rolling(i * 10).mean()
-        # df['MACD'] = ta.trend.macd_diff(df['Close'])
-        self.df.dropna(inplace=True)
-
-
-    def create_target(self, period=1):
-        self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
-        self.df = self.df[:-period]
-        if self.task_type == "classification":
-            self.df["Target"] = np.where(self.df["Target"] > 0, 1, 0)
-
-
-    def optimize(self, output_dir_path, metric=None, number_of_trials=10):
+    def optimize(
+        self,
+        data: Data,
+        output_dir_path: Union[str, Path],
+        metric: str = None,
+        number_of_trials: int = 10,
+    ) -> NoReturn:
         is_metric = False
         metrics = get_metrics()
         if not os.path.exists(output_dir_path):
@@ -121,11 +112,11 @@ class Model:
             study_name = f"{self.task_type} {self.model_name} with metric - {item}"
             study = optuna.create_study(direction=direction, study_name=study_name)
             # func = lambda trial: Objective(self, metric_grid[item])
-            func = Objective(self, metric_grid[item])
+            func = Objective(self, data, metric_grid[item])
             study.optimize(func, n_trials=number_of_trials)
             results = study.best_params
             results["best_value"] = study.best_value
-            results["metric"] = metrics[item]['abbr']
+            results["metric"] = metrics[item]["abbr"]
             full_path = os.path.join(
                 full_dir_output_path, f"{self.model_name}_best_parameters_{item}.yaml"
             )
