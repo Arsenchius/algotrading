@@ -3,7 +3,7 @@ import numpy as np
 from binance import Client
 import ta
 import sys
-import tqdm
+from tqdm import tqdm
 import os
 from pathlib import Path
 
@@ -20,19 +20,28 @@ FEATURES = [
     "High",
     "Low",
     "Volume",
-    "RSI_2",
-    "SMA_20",
-    "RSI_4",
-    "SMA_40",
-    "RSI_6",
-    "SMA_60",
-    "RSI_8",
-    "SMA_80",
+    "RSI_14",
+    "SMA_3",
+    "EMA_3",
+    "SMA_5",
+    "EMA_5",
+    "SMA_15",
+    "EMA_15",
+    "SMA_30",
+    "EMA_30",
+    "SMA_50",
+    "EMA_50",
+    "SMA_100",
+    "EMA_100",
+    "MACD",
+    "bb_bbm",
+    "bb_bbh",
+    "bb_bbl",
 ]
 TARGET = "Target"
 
 
-def get_data(
+def get_actual_data(
     symbol: str,
     time_frame: str = config.INTERVAL_1MINUTE,
     end_date: str = "1000 hours ago UTC",
@@ -46,7 +55,3 @@ def get_data(
     df.index = pd.to_datetime(df.index, unit="ms")
     df = df.astype(float)
     return df
-
-
-def get_features() -> NoReturn:
-    pass

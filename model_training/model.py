@@ -2,8 +2,8 @@ import lightgbm as lgb
 import xgboost as xgb
 import pandas as pd
 import numpy as np
-# from catboost import CatBoostRegressor, CatBoostClassifier
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression, ElasticNet
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.metrics import (
     log_loss,
@@ -25,6 +25,8 @@ from tqdm.notebook import tqdm
 import ta
 import os
 from typing import NoReturn, List, Dict, Union
+
+# from catboost import CatBoostRegressor, CatBoostClassifier
 
 
 def get_metrics() -> Dict:
@@ -48,37 +50,85 @@ def get_params(model_name: str) -> Dict:
 
 
 class Model:
-    def __init__(self, model_name, task_type) -> NoReturn:
+    def __init__(self, model_name) -> NoReturn:
         self.model_name = model_name
-        self.task_type = task_type
-        if self.task_type == "classification":
-            if model_name == "LightGBM":
-                self.model = lgb.LGBMClassifier
-            elif model_name == "XGBoost":
-                self.model = xgb.XGBClassifier
-            # elif model_name == "Catboost":
-            # self.model = CatBoostClassifier()
-            elif model_name == "RandomForest":
-                self.model = RandomForestClassifier
-            # elif model_name == "Linear":
-            #     self.model =
-            else:
-                print("wrong type of model")
-        elif self.task_type == "regression":
-            if model_name == "LightGBM":
-                self.model = lgb.LGBMRegressor
-            elif model_name == "XGBoost":
-                self.model = xgb.XGBRegressor
-            # elif model_name == "Catboost":
-            # self.model = CatBoostRegressor()
-            elif model_name == "RandomForest":
-                self.model = RandomForestRegressor
-            else:
-                print("wrong type of model")
-        else:
-            print("wrong type of task")
-
         self.params = get_params(model_name)
+        self.model_trained = None
+
+        if model_name == "LightGBM":
+            self.model_classification = lgb.LGBMClassifier
+            self.model_regression = lgb.LGBMRegressor
+        elif model_name == "XGBoost":
+            self.model_classification = xgb.XGBClassifier
+            self.model_regression = xgb.XGBRegressor
+        elif model_name == "RandomForest":
+            self.model_classification = RandomForestClassifier
+            self.model_regression = RandomForestRegressor
+        # elif model_name == "Catboost":
+        #     self.model_classification = CatBoostClassifier()
+        #     self.model_regression = CatBoostRegressor()
+        # elif model_name == "Linear":
+        #     self.model_classification = LogisticRegression
+        #     self.model_regression = ElasticNet
+        else:
+            print("wrong type of model")
+
+    def train(
+        self,
+        data: Data,
+        metric: str,
+        type_of_training: str = "default",
+        is_optimized: bool = False,
+    ):
+        """
+        type_of_training:
+        default - if default timeseries train test split
+        alternative - if another one, when we dont use too old part of training data
+        """
+
+        def define_task_type() -> str:
+            if len(set(data.df["Target"].values)) == 2:
+                return "classification"
+            else:
+                return "regression"
+
+        task_type = define_task_type()
+        metrics = get_metrics()
+
+        if type_of_training == "alternative":
+            return None
+        else:
+            params = {}
+            if is_optimized:
+                curr_cwd = os.getcwd()
+                optimization_results = os.path.join(curr_cwd, "optimization_results")
+                optimization_dir_path = os.path.join(
+                    optimization_results, f"res_{task_type}"
+                )
+                cur_model_params = os.path.join(
+                    optimization_dir_path,
+                    f"{self.model_name}_best_parameters_{metric}.yaml",
+                )
+                with open(cur_model_params, "r") as file:
+                    load_params = yaml.safe_load(file)
+                del load_params["best_value"]
+                del load_params["metric"]
+                params = load_params
+
+            if task_type == "classification":
+                model_loaded = self.model_classification(**params)
+            elif task_type == "regression":
+                model_loaded = self.model_regression(**params)
+            else:
+                print("Error with task type")
+                return None
+            X_all = data.df[FEATURES]
+            y_all = data.df[TARGET]
+            model_loaded.fit(X_all, y_all, eval_set=[(X_all, y_all)], verbose=100)
+            y_pred = model_loaded.predict(X_all)
+            score = metric_grid[metric](y_all, y_pred)
+            self.model_trained = model_loaded
+        return score
 
     def optimize(
         self,
@@ -100,16 +150,24 @@ class Model:
         if metric is not None:
             is_metric = True
 
-        for item in tqdm(metrics[self.task_type]):
+        def define_task_type() -> str:
+            if len(set(data.df["Target"].values)) == 2:
+                return "classification"
+            else:
+                return "regression"
+
+        task_type = define_task_type()
+
+        for item in tqdm(metrics[task_type]):
             if is_metric:
                 if item != metric:
                     continue
             direction = metrics[item]["objective"]
             direction = "minimize" if direction == "min" else "maximize"
-            study_name = f"{self.task_type} {self.model_name} with metric - {item}"
+            study_name = f"{task_type} {self.model_name} with metric - {item}"
             study = optuna.create_study(direction=direction, study_name=study_name)
             # func = lambda trial: Objective(self, metric_grid[item])
-            func = Objective(self, data, metric_grid[item])
+            func = Objective(self, data, metric_grid[item], task_type)
             study.optimize(func, n_trials=number_of_trials)
             results = study.best_params
             results["best_value"] = study.best_value

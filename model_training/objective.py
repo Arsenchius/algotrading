@@ -8,6 +8,7 @@ def Objective(
     model,
     data: Data,
     score_metric: Callable,
+    task_type: str,
     number_of_splits: int = 5,
     test_size: int = 5 * 24 * 60,
 ) -> Callable:
@@ -72,7 +73,10 @@ def Objective(
             X_test = test[FEATURES]
             y_test = test[TARGET]
 
-            model_loaded = model.model(**params)
+            if task_type == 'classification':
+                model_loaded = model.model_classification(**params)
+            elif task_type == 'regression':
+                model_loaded = model.model_regression(**params)
 
             if model.model_name in ["LightGBM", "XGBoost"]:
                 model_loaded.fit(
