@@ -1,0 +1,18 @@
+{
+    "features": [
+        "Open",
+        "High",
+        "Low",
+        "Volume",
+        "Close",
+        "EMA_3",
+        "EMA_5",
+        "EMA_15",
+        "EMA_30",
+        "EMA_50",
+        "EMA_100",
+        "MACD"
+    ],
+    "metric": "roc_auc",
+    "result": 0.5307308036985912
+}

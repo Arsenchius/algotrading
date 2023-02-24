@@ -8,6 +8,7 @@ def Objective(
     model,
     data: Data,
     score_metric: Callable,
+    features: List[str],
     task_type: str,
     number_of_splits: int = 5,
     test_size: int = 5 * 24 * 60,
@@ -67,11 +68,11 @@ def Objective(
             train = data.df.iloc[train_idx]
             test = data.df.iloc[val_idx]
 
-            X_train = train[FEATURES]
-            y_train = train[TARGET]
+            X_train = train[features]
+            y_train = train['Target']
 
-            X_test = test[FEATURES]
-            y_test = test[TARGET]
+            X_test = test[features]
+            y_test = test['Target']
 
             if task_type == 'classification':
                 model_loaded = model.model_classification(**params)

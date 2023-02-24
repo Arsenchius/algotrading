@@ -60,13 +60,25 @@ def run(
     if not os.path.exists(result_dir_path):
         os.mkdir(result_dir_path)
 
+    task_type_result_dir_path = os.path.join(result_dir_path, task_type)
+
+    if not os.path.exists(task_type_result_dir_path):
+        os.mkdir(task_type_result_dir_path)
+
+    final_result_dir_path = os.path.join(task_type_result_dir_path, model_name)
+
+    if not os.path.exists(final_result_dir_path):
+        os.mkdir(final_result_dir_path)
+
     part_jobs = []
+
     df = pd.read_csv(data_path)
     df.set_index(['Time'], inplace=True)
     data = Data(df)
     data.create_features_and_target(task_type=task_type)
-    for exp_id in tqdm_notebook(expirements):
-        full_part_output_path = os.path.join(result_dir_path, f"res-{exp_id}")
+
+    for exp_id in expirements:
+        full_part_output_path = os.path.join(final_result_dir_path, f"res-{exp_id}")
 
         part_jobs.append(
             Process(

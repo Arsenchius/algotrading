@@ -21,7 +21,9 @@ import optuna
 from metrics import *
 from objective import Objective
 import yaml
-from tqdm.notebook import tqdm
+from tqdm import tqdm
+
+# from tqdm.notebook import tqdm
 import ta
 import os
 from typing import NoReturn, List, Dict, Union
@@ -124,8 +126,12 @@ class Model:
                 print("Error with task type")
                 return None
             X_all = data.df[features]
-            y_all = data.df['Target']
-            model_loaded.fit(X_all, y_all, eval_set=[(X_all, y_all)])
+            y_all = data.df["Target"]
+            model_loaded.fit(
+                X_all,
+                y_all,
+                eval_set=[(X_all, y_all)],
+            )
             y_pred = model_loaded.predict(X_all)
             score = metric_grid[metric](y_all, y_pred)
             self.model_trained = model_loaded
@@ -135,6 +141,7 @@ class Model:
         self,
         data: Data,
         output_dir_path: Union[str, Path],
+        features: List[str],
         metric: str = None,
         number_of_trials: int = 10,
     ) -> NoReturn:
@@ -168,7 +175,7 @@ class Model:
             study_name = f"{task_type} {self.model_name} with metric - {item}"
             study = optuna.create_study(direction=direction, study_name=study_name)
             # func = lambda trial: Objective(self, metric_grid[item])
-            func = Objective(self, data, metric_grid[item], task_type)
+            func = Objective(self, data, metric_grid[item], features, task_type)
             study.optimize(func, n_trials=number_of_trials)
             results = study.best_params
             results["best_value"] = study.best_value
