@@ -77,6 +77,7 @@ class Model:
         self,
         data: Data,
         metric: str,
+        features: List[str],
         type_of_training: str = "default",
         is_optimized: bool = False,
     ):
@@ -122,9 +123,9 @@ class Model:
             else:
                 print("Error with task type")
                 return None
-            X_all = data.df[FEATURES]
-            y_all = data.df[TARGET]
-            model_loaded.fit(X_all, y_all, eval_set=[(X_all, y_all)], verbose=100)
+            X_all = data.df[features]
+            y_all = data.df['Target']
+            model_loaded.fit(X_all, y_all, eval_set=[(X_all, y_all)])
             y_pred = model_loaded.predict(X_all)
             score = metric_grid[metric](y_all, y_pred)
             self.model_trained = model_loaded

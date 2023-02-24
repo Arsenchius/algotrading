@@ -14,16 +14,14 @@ class Data:
         if indicators:
             self.indicators_calc()
         self.df = self.df[:-period]
+        for i in range(5):
+            self.df[f"close_{i+1}"] = self.df["Close"].shift(i + 1)
+            self.df[f"open_{i+1}"] = self.df["Open"].shift(i + 1)
+            self.df[f"high_{i+1}"] = self.df["High"].shift(i + 1)
+            self.df[f"low_{i+1}"] = self.df["Low"].shift(i + 1)
+        self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
         if task_type == "classification":
-            self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
             self.df["Target"] = np.where(self.df["Target"] > 0, 1, 0)
-        elif task_type == "regression":
-            for i in range(5):
-                self.df[f"close_{i+1}"] = self.df["Close"].shift(i + 1)
-            self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
-        else:
-            print("Error, correctly choose type of task: regression or classification")
-            return
         self.df.dropna(inplace=True)
 
     def indicators_calc(self) -> NoReturn:
@@ -58,5 +56,9 @@ class Data:
 
         # Add Bollinger Band low indicator
         # self.df['bb_bbli'] = indicator_bb.bollinger_lband_indicator()
+
+        # Add on-balance volume indicator
+        self.df["OBV"] = ta.volume.on_balance_volume(self.df['Close'], self.df['Volume'])
+
 
         # self.df.dropna(inplace=True)
