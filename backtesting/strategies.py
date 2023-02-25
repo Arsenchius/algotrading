@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-model_path = '/home/kenny/algotrading/model_training/model.onnx'
+model_path = '/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/model_training/model.onnx'
 features_24 = EXPERIMENT_ID_TO_FEATURES[24]
 
 class SmaCross(Strategy):
@@ -43,10 +43,10 @@ class Basic(Strategy):
         self.price_delta = .05 # 5%
 
         # Plot y for inspection
-        self.I(get_y, self.data.df, name='y_true')
+        # self.I(get_y, self.data.df, name='y_true')
 
         # Prepare empty, all-NaN forecast indicator
-        self.forecasts = self.I(lambda: np.repeat(np.nan, len(self.data)), name='forecast')
+        # self.forecasts = self.I(lambda: np.repeat(np.nan, len(self.data)), name='forecast')
         pass
 
     def next(self):
