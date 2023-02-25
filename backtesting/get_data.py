@@ -31,6 +31,7 @@ def get_data(pairs: List[str], start_date: str, interval: str, url: str) -> NoRe
         df.set_index("Open_Time", inplace=True)
         df = df.drop(
             columns=[
+                "Close_Time",
                 "Quote_Asset_Volume",
                 "Number_of_Trades",
                 "TB_Base_Volume",

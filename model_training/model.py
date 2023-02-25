@@ -21,12 +21,12 @@ import optuna
 from metrics import *
 from objective import Objective
 import yaml
-from tqdm import tqdm
-
-# from tqdm.notebook import tqdm
+from tqdm.notebook import tqdm
 import ta
 import os
 from typing import NoReturn, List, Dict, Union
+import warnings
+warnings.filterwarnings("ignore")
 
 # from catboost import CatBoostRegressor, CatBoostClassifier
 
@@ -150,14 +150,6 @@ class Model:
         if not os.path.exists(output_dir_path):
             os.mkdir(output_dir_path)
 
-        full_dir_output_path = os.path.join(output_dir_path, f"res_{self.task_type}/")
-
-        if not os.path.exists(full_dir_output_path):
-            os.mkdir(full_dir_output_path)
-
-        if metric is not None:
-            is_metric = True
-
         def define_task_type() -> str:
             if len(set(data.df["Target"].values)) == 2:
                 return "classification"
@@ -165,6 +157,14 @@ class Model:
                 return "regression"
 
         task_type = define_task_type()
+
+        full_dir_output_path = os.path.join(output_dir_path, f"res_{task_type}/")
+
+        if not os.path.exists(full_dir_output_path):
+            os.mkdir(full_dir_output_path)
+
+        if metric is not None:
+            is_metric = True
 
         for item in tqdm(metrics[task_type]):
             if is_metric:

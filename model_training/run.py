@@ -75,7 +75,8 @@ def run(
     df = pd.read_csv(data_path)
     df.set_index(['Time'], inplace=True)
     data = Data(df)
-    data.create_features_and_target(task_type=task_type)
+    data.create_features()
+    data.create_target(task_type=task_type)
 
     for exp_id in expirements:
         full_part_output_path = os.path.join(final_result_dir_path, f"res-{exp_id}")

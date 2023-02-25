@@ -2,27 +2,30 @@ from typing import NoReturn
 import pandas as pd
 import ta
 import numpy as np
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 class Data:
     def __init__(self, df: pd.DataFrame) -> NoReturn:
         self.df = df
 
-    def create_features_and_target(
-        self, task_type: str, period: int = 1, indicators: bool = True
-    ) -> NoReturn:
+    def create_features(self, period: int = 1, indicators: bool = True) -> NoReturn:
         if indicators:
             self.indicators_calc()
-        self.df = self.df[:-period]
         for i in range(5):
             self.df[f"close_{i+1}"] = self.df["Close"].shift(i + 1)
             self.df[f"open_{i+1}"] = self.df["Open"].shift(i + 1)
             self.df[f"high_{i+1}"] = self.df["High"].shift(i + 1)
             self.df[f"low_{i+1}"] = self.df["Low"].shift(i + 1)
+        # self.df.dropna(inplace=True)
+
+    def create_target(self, task_type: str, period: int = 1):
         self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
         if task_type == "classification":
             self.df["Target"] = np.where(self.df["Target"] > 0, 1, 0)
-        self.df.dropna(inplace=True)
+        self.df = self.df[:-period]
 
     def indicators_calc(self) -> NoReturn:
         periods = [3, 5, 15, 30, 50, 100]
@@ -58,7 +61,8 @@ class Data:
         # self.df['bb_bbli'] = indicator_bb.bollinger_lband_indicator()
 
         # Add on-balance volume indicator
-        self.df["OBV"] = ta.volume.on_balance_volume(self.df['Close'], self.df['Volume'])
-
+        self.df["OBV"] = ta.volume.on_balance_volume(
+            self.df["Close"], self.df["Volume"]
+        )
 
         # self.df.dropna(inplace=True)

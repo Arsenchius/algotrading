@@ -1,6 +1,6 @@
 from data import *
 from sklearn.model_selection import TimeSeriesSplit
-from typing import Callable
+from typing import Callable, List
 from optuna.trial import Trial
 from dataset import Data
 

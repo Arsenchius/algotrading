@@ -11,7 +11,7 @@ from config import *
 from get_data import *
 from backtest import *
 from strategies import *
-from experiments import EXPERIMENT_ID_TO_STRATEGY
+from strategies_exps import EXPERIMENT_ID_TO_STRATEGY
 
 
 def _run_part(
