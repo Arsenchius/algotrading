@@ -90,11 +90,12 @@ class Model:
         """
 
         def define_task_type() -> str:
-            if len(set(data.df["Target"].values)) == 2:
+            if  target_values == 2 or target_values == 3:
                 return "classification"
             else:
                 return "regression"
 
+        target_values = len(set(data.df["Target"].values))
         task_type = define_task_type()
         metrics = get_metrics()
 
@@ -132,8 +133,13 @@ class Model:
                 y_all,
                 eval_set=[(X_all, y_all)],
             )
-            y_pred = model_loaded.predict(X_all)
-            score = metric_grid[metric](y_all, y_pred)
+
+            if target_values == 3:
+                y_pred = model_loaded.predict_proba(X_all)
+                score = metric_grid[metric](y_all, y_pred, multi_class='ovr')
+            else:
+                y_pred = model_loaded.predict(X_all)
+                score = metric_grid[metric](y_all, y_pred)
             self.model_trained = model_loaded
         return score
 

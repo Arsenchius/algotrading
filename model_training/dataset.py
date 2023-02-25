@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 class Data:
     def __init__(self, df: pd.DataFrame) -> NoReturn:
-        self.df = df
+        self.df = df.copy()
 
     def create_features(self, period: int = 1, indicators: bool = True) -> NoReturn:
         if indicators:
@@ -21,11 +21,23 @@ class Data:
             self.df[f"low_{i+1}"] = self.df["Low"].shift(i + 1)
         # self.df.dropna(inplace=True)
 
-    def create_target(self, task_type: str, period: int = 1):
-        self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
-        if task_type == "classification":
+    def create_target(self, task_type: str, period: int = 1, percent: float=.0005):
+
+        # self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
+        if task_type == "multiclassification":
+            y = self.df.Close.pct_change(1).shift(1)    # Returns after 1 min
+            y[y.between(-percent, percent)] = 0         # Devalue returns smaller than 0.05%
+            y[y > 0] = 1
+            y[y < 0] = -1
+            self.df['Target'] = y
+            self.df['Target'].fillna(self.df['Target'].mode().values[0], inplace=True)
+        elif task_type == "binaryclassification":
+            self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
             self.df["Target"] = np.where(self.df["Target"] > 0, 1, 0)
-        self.df = self.df[:-period]
+        elif task_type == 'regression':
+            self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
+
+        # self.df = self.df[:-period]
 
     def indicators_calc(self) -> NoReturn:
         periods = [3, 5, 15, 30, 50, 100]
