@@ -5,5 +5,5 @@ from experiments import EXPERIMENT_ID_TO_FEATURES
 
 EXPERIMENT_ID_TO_STRATEGY = {
     1: SmaCross,
-    2: Basic,
+    2: MultipleBasic,
 }

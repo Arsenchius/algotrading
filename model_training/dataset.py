@@ -24,18 +24,19 @@ class Data:
     def create_target(self, task_type: str, period: int = 1, percent: float=.0005):
 
         # self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
-        if task_type == "multiclassification":
+        if task_type == "multi_classification":
             y = self.df.Close.pct_change(1).shift(1)    # Returns after 1 min
             y[y.between(-percent, percent)] = 0         # Devalue returns smaller than 0.05%
             y[y > 0] = 1
             y[y < 0] = -1
             self.df['Target'] = y
             self.df['Target'].fillna(self.df['Target'].mode().values[0], inplace=True)
-        elif task_type == "binaryclassification":
+        elif task_type == "binary_classification":
             self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
             self.df["Target"] = np.where(self.df["Target"] > 0, 1, 0)
         elif task_type == 'regression':
             self.df["Target"] = self.df["Close"].shift(-period) - self.df["Close"]
+            self.df.dropna(inplace=True)
 
         # self.df = self.df[:-period]
 

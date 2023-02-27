@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT=/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/results
+OUTPUT=/home/kenny/algotrading/results
 
 EXECUTABLE=$1
 TIMEDELTA=$2

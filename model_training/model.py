@@ -135,8 +135,15 @@ class Model:
             )
 
             if target_values == 3:
-                y_pred = model_loaded.predict_proba(X_all)
-                score = metric_grid[metric](y_all, y_pred, multi_class='ovr')
+                if metric == 'roc_auc':
+                    y_pred = model_loaded.predict_proba(X_all)
+                    score = metric_grid[metric](y_all, y_pred, multi_class='ovr')
+                else:
+                    y_pred = model_loaded.predict(X_all)
+                    if metric == 'f1':
+                        score = metric_grid[metric](y_all, y_pred, average='macro')
+                    else:
+                        score = metric_grid[metric](y_all, y_pred)
             else:
                 y_pred = model_loaded.predict(X_all)
                 score = metric_grid[metric](y_all, y_pred)

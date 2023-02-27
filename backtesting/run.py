@@ -24,13 +24,13 @@ def _run_part(
 ) -> NoReturn:
     get_data(tranding_pairs, start_date, time_frame, url)
 
-    top_5 = backtest(
-        EXPERIMENT_ID_TO_STRATEGY[strategy_id],
-        output_dir_path,
-        url,
-        time_frame,
-        td_days,
-    )
+    # top_5 = backtest(
+    #     EXPERIMENT_ID_TO_STRATEGY[strategy_id],
+    #     output_dir_path,
+    #     url,
+    #     time_frame,
+    #     td_days,
+    # )
 
 
 
@@ -43,7 +43,7 @@ def run(args):
     if not os.path.exists(output_dir_path):
         os.mkdir(output_dir_path)
 
-    start_date = "30 days ago UTC"
+    start_date = "5 days ago UTC"
     part_jobs = []
 
     for time_interval in time_frame_to_data_base:

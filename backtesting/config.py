@@ -8,10 +8,10 @@ INTERVAL_30MINUTE = "30m"
 INTERVAL_1HOUR = "1h"
 DATABASE_URL_1MINUTE = "sqlite://///home/kenny/algotrading/database/Crypto_1m.sqlite"
 DATABASE_URL_3MINUTE = "sqlite://///home/kenny/algotrading/database/Crypto_3m.sqlite"
-DATABASE_URL_5MINUTE = "sqlite:///database/Crypto_5m.sqlite"
+DATABASE_URL_5MINUTE = "sqlite:////home/kenny/algotrading/database/Crypto_5m.sqlite"
 DATABASE_URL_15MINUTE = "sqlite://///home/kenny/algotrading/database/Crypto_15m.sqlite"
-DATABASE_URL_30MINUTE = "sqlite:///database/Crypto_30m.sqlite"
-DATABASE_URL_1HOUR = "sqlite:///database/Crypto_1h.sqlite"
+DATABASE_URL_30MINUTE = "sqlite:////home/kenny/algotrading/database/Crypto_30m.sqlite"
+DATABASE_URL_1HOUR = "sqlite:////home/kenny/algotrading/database/Crypto_1h.sqlite"
 
 time_frame_to_data_base = {
     INTERVAL_1MINUTE: DATABASE_URL_1MINUTE,
