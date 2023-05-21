@@ -13,3 +13,4 @@ optuna_test.ipynb
 marketdata.md
 src/configs/config.py
 .DS_Store
+reports/backtest_results/graphs
