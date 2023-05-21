@@ -12,3 +12,4 @@ optuna_test.ipynb
 .vscode
 marketdata.md
 src/configs/config.py
+.DS_Store
