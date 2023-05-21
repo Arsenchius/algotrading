@@ -1,0 +1,13 @@
+bagging_fraction: 0.8
+bagging_freq: 1
+best_value: 0.01570477544028675
+early_stopping_rounds: 72
+feature_fraction: 0.9
+lambda_l1: 50
+lambda_l2: 60
+learning_rate: 0.015149764008252561
+max_depth: 7
+metric: MSE
+min_gain_to_split: 0.5221925525164123
+n_estimators: 75
+num_leaves: 2940

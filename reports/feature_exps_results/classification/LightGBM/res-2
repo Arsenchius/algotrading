@@ -1,0 +1,12 @@
+{
+    "features": [
+        "Open",
+        "High",
+        "Low",
+        "Volume",
+        "Close",
+        "RSI_14"
+    ],
+    "metric": "roc_auc",
+    "result": 0.5306674926497191
+}

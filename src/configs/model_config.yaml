@@ -1,0 +1,55 @@
+model_name:
+  LightGBM:
+    parameters:
+      # device_type: !!python/tuple ["cat", ['gpu']]
+      n_estimators: !!python/tuple ["int", 50, 1000]
+      # n_estimators: !!python/tuple ["cat", [1000]]
+      learning_rate: !!python/tuple ["float", 0.01, 0.3]
+      num_leaves: !!python/tuple ["int", 20, 3000, 20]
+      max_depth: !!python/tuple ["int", 3, 12]
+      # min_data_in_leaf: !!python/tuple ["int", 20, 1000, 20]
+      lambda_l1: !!python/tuple ["int", 0, 100, 5]
+      lambda_l2: !!python/tuple ["int", 0, 100, 5]
+      min_gain_to_split: !!python/tuple ["float", 0, 15]
+      bagging_fraction: !!python/tuple ["float", 0.2, 0.95, 0.1]
+      bagging_freq: !!python/tuple ["cat", [1]]
+      feature_fraction: !!python/tuple ["float", 0.2, 0.95, 0.1]
+      early_stopping_rounds: !!python/tuple ["int", 50, 500]
+
+
+  XGBoost:
+    parameters:
+      # device_type: !!python/tuple ["cat", ['gpu']]
+      max_depth: !!python/tuple ["int", 3, 12]
+      learning_rate: !!python/tuple ["float", 0.01, 0.3]
+      n_estimators: !!python/tuple ["int", 50, 1000]
+      min_child_weight: !!python/tuple ["int", 1, 10]
+      gamma: !!python/tuple ["log", 0.00000001, 1.0]
+      subsample: !!python/tuple ["log", 0.01, 1.0]
+      colsample_bytree: !!python/tuple ["float", 0.01, 1.0]
+      reg_alpha: !!python/tuple ["log", 0.00000001, 100.0]
+      reg_lambda: !!python/tuple ["log", 0.00000001, 100.0]
+      use_label_encoder: False
+      objective: 'binary:logistic'
+      # early_stopping_rounds: !!python/tuple ["int", 100, 500]
+
+  # CatBoost:
+    # parameters:
+      # loss_function: "RMSE"
+      # task_type: "GPU"
+      # l2_leaf_reg: !!python/tuple ["log", 0.001, 10.0]
+      # max_bin: !!python/tuple ["int", 200, 400]
+      #'rsm': !!python/tuple ["uni", 0.3, 1.0]
+      # subsample: !!python/tuple ["uni", 0.4, 1.0]
+      # learning_rate: !!python/tuple ["uni", 0.006, 0.018]
+      # n_estimators: 25000
+      # max_depth: !!python/tuple ["int", 3, 12]
+      # random_state: !!python/tuple ["cat", [2020]]
+      # min_data_in_leaf: !!python/tuple ["int", 1, 300]
+
+  RandomForest:
+    parameters:
+      max_depth: !!python/tuple ["int", 2, 15]
+      n_estimators: !!python/tuple ["int", 50, 500]
+      min_samples_split: !!python/tuple ["int", 2, 20]
+      min_samples_leaf: !!python/tuple ["int", 1, 20]

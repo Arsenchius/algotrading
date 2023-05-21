@@ -1,0 +1,11 @@
+{
+    "features": [
+        "Open",
+        "High",
+        "Low",
+        "Volume",
+        "Close"
+    ],
+    "metric": "roc_auc",
+    "result": 0.5246182385359555
+}

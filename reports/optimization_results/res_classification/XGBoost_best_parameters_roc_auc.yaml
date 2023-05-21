@@ -1,0 +1,11 @@
+XGBoost_colsample_bytree: 0.1493618114328412
+XGBoost_gamma: 0.44692822142670924
+XGBoost_learning_rate: 0.14243880074522047
+XGBoost_max_depth: 3
+XGBoost_min_child_weight: 9
+XGBoost_n_estimators: 456
+XGBoost_reg_alpha: 3.7406518600162077e-07
+XGBoost_reg_lambda: 4.334681672478823
+XGBoost_subsample: 0.14195579253656046
+best_value: 0.5115344027088231
+metric: ROC AUC

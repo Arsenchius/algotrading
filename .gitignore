@@ -9,4 +9,6 @@ __pycache__
 /model_training/.ipynb_checkpoints
 optuna_optimizing.py
 optuna_test.ipynb
-
+.vscode
+marketdata.md
+src/configs/config.py

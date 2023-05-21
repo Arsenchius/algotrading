@@ -1,0 +1,16 @@
+{
+    "features": [
+        "Open",
+        "High",
+        "Low",
+        "Volume",
+        "Close",
+        "bb_bbm",
+        "bb_bbh",
+        "bb_bbl",
+        "RSI_14",
+        "MACD"
+    ],
+    "metric": "roc_auc",
+    "result": 0.5348438155048674
+}

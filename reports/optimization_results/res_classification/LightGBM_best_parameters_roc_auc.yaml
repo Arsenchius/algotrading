@@ -1,0 +1,13 @@
+bagging_fraction: 0.2
+bagging_freq: 1
+best_value: 0.5214065295060936
+early_stopping_rounds: 488
+feature_fraction: 0.2
+lambda_l1: 95
+lambda_l2: 50
+learning_rate: 0.1945272164205704
+max_depth: 5
+metric: ROC AUC
+min_gain_to_split: 0.8118754878362294
+n_estimators: 507
+num_leaves: 640

@@ -1,0 +1,17 @@
+{
+    "features": [
+        "Open",
+        "High",
+        "Low",
+        "Volume",
+        "Close",
+        "SMA_3",
+        "SMA_5",
+        "SMA_15",
+        "SMA_30",
+        "SMA_50",
+        "SMA_100"
+    ],
+    "metric": "roc_auc",
+    "result": 0.5301584184132985
+}

@@ -1,0 +1,69 @@
+regression:
+  ['mse', 'mae', 'r_2']
+classification:   # uses macro averaging when available
+  ['log_loss', 'accuracy', 'roc_auc', 'f1']
+# classification:   # uses micro averaging when available
+#   ['log_loss', 'accuracy', 'precision', 'recall',
+#   'f1',]
+
+# Regression Metrics
+
+mse:
+  full_name: Mean Squared Error
+  abbr: MSE
+  objective: min
+mae:
+  full_name: Mean Absolute Error
+  abbr: MAE
+  objective: min
+msle:
+  full_name: Mean Squared Logarithmic Error
+  abbr: MSLE
+  objective: min
+poisson:
+  full_name: Poisson Loss
+  abbr: Poisson Loss
+  objective: min
+r_2:
+  full_name: R^2
+  abbr: R^2
+  objective: max
+
+# Binary/Classification Metrics
+
+log_loss:
+  full_name: Log Loss
+  abbr: Log Loss
+  objective: min
+categorical_crossentropy:
+  full_name: Categorical Loss
+  abbr: Categorical Loss
+  objective: min
+binary_crossentropy:
+  full_name: Binary Loss
+  abbr: Binary Loss
+  objective: min
+accuracy:
+  full_name: Accuracy
+  abbr: Accuracy
+  objective: max
+  format: percent
+precision:
+  full_name: Precision
+  abbr: Precision
+  objective: max
+  format: percent
+recall:
+  full_name: Recall
+  abbr: Recall
+  objective: max
+  format: percent
+f1:
+  full_name: F1 Score
+  abbr: F1
+  objective: max
+  format: percent
+roc_auc:
+  full_name: Area Under the ROC
+  abbr: ROC AUC
+  objective: max
