@@ -16,7 +16,7 @@ from experiments import EXPERIMENT_ID_TO_FEATURES
 from dataset import Data
 from backtesting import Strategy
 from backtesting.lib import crossover
-from backtesting.test import SMA
+from backtesting.test import SMA, RSI
 
 
 warnings.filterwarnings("ignore")
@@ -31,6 +31,20 @@ binary_model_path = "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/a
 binary_model_path_txt = "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/model_training/models/binary_model_1_min.txt"
 features_24 = EXPERIMENT_ID_TO_FEATURES[24]
 
+
+class TrendSwitcher(Strategy):
+    n = 14
+    def init(self):
+        self.rsi = self.I(RSI, close, self.n)
+        self.atr = self.I(ATR, close, self.n)
+
+    def next(self):
+        if crossover(self.rsi, self.atr) or crossover(self.atr, self.rsi):
+            self.buy()
+            # To Do
+        else:
+            self.sell()
+            # To Do
 
 class SmaCross(Strategy):
     n1 = 10
