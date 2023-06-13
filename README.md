@@ -4,5 +4,5 @@
 
 
 
-
+![Схема, описывающая процесс разработки торговых стратегий](https://github.com/Arsenchius/algotrading/blob/main/reports/figures/HFT_OB_pipeline.png)
 
