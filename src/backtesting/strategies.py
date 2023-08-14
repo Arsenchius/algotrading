@@ -16,7 +16,7 @@ from experiments import EXPERIMENT_ID_TO_FEATURES
 from dataset import Data
 from backtesting import Strategy
 from backtesting.lib import crossover
-from backtesting.test import SMA, RSI
+from backtesting.test import SMA
 
 
 warnings.filterwarnings("ignore")
@@ -34,6 +34,7 @@ features_24 = EXPERIMENT_ID_TO_FEATURES[24]
 
 class TrendSwitcher(Strategy):
     n = 14
+
     def init(self):
         self.rsi = self.I(RSI, close, self.n)
         self.atr = self.I(ATR, close, self.n)
@@ -45,6 +46,7 @@ class TrendSwitcher(Strategy):
         else:
             self.sell()
             # To Do
+
 
 class SmaCross(Strategy):
     n1 = 10
