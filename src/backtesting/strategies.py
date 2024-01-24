@@ -25,10 +25,10 @@ warnings.filterwarnings("ignore")
 # multi_model_path = '/home/kenny/algotrading/model_training/multi_model.onnx'
 # binary_model_path = '/home/kenny/algotrading/model_training/binary_model.onnx'
 
-multi_model_path = "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/model_training/models/multi_model_1_min.onnx"
-multi_model_path_txt = "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/model_training/models/multi_model_1_min.txt"
-binary_model_path = "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/model_training/models/binary_model_1_min.onnx"
-binary_model_path_txt = "/Users/arsenchik/Desktop/dipploma/machine_learning_in_hft/algotrading/model_training/models/binary_model_1_min.txt"
+multi_model_path = "/Users/arsenchik/Desktop/study/dipploma/machine_learning_in_hft/algotrading/models/multi_model_1_min.onnx"
+multi_model_path_txt = "/Users/arsenchik/Desktop/study/dipploma/machine_learning_in_hft/algotrading/models/multi_model_1_min.txt"
+binary_model_path = "/Users/arsenchik/Desktop/study/dipploma/machine_learning_in_hft/algotrading/models/binary_model_1_min.onnx"
+binary_model_path_txt = "/Users/arsenchik/Desktop/study/dipploma/machine_learning_in_hft/algotrading/models/binary_model_1_min.txt"
 features_24 = EXPERIMENT_ID_TO_FEATURES[24]
 
 
@@ -192,6 +192,7 @@ class Binary(Strategy):
 
     def next(self):
         price = self.data.Close[-1]
+        current_time = self.data.index[-1]
         upper, lower = price * (1 + np.r_[1, -1] * self.price_delta)
         positive = self.data.predicted_proba[-1]
 
@@ -209,6 +210,10 @@ class Binary(Strategy):
         elif forecast == 0 and not self.position.is_short:
             self.position.close()
             self.sell(size=0.25)
+
+        for trade in self.trades:
+            if current_time - trade.entry_time > pd.Timedelta(minutes=45):
+                self.position.close()
 
 
 class BinaryBasic(Strategy):
